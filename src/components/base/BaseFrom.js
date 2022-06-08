@@ -21,6 +21,23 @@
             constructor(props){
                 // Use super() to inject properties from extend class
                 super(props);
+
+                /* 
+                    [STATE] Component
+                    Define compoenent property value
+                */
+                    // Bind property value from parent component
+                    this.cmpFormvalue = this.props.formvalue;
+
+                    this.state = {
+                        cmpButton: {
+                            type: 'submit',
+                            content: this.cmpFormvalue.submit,
+                            isfull: true,
+                            isprimary: true,
+                        },
+                    }
+                //
             }
         //
 
@@ -30,10 +47,41 @@
         */
             render(){
                 return(
+                    /* Bind 'submit' event to emit 'onSubmit' event */
                     <form className='base-form-component'>
-                        <p>base-form-component</p>
+                        <h2 className="title is-size-4">{ this.cmpFormvalue.title }</h2>
 
-                        <BaseCallToAction />
+                        {/* Display DOM loop: map */}
+                        {
+                            this.cmpFormvalue.fieldsets.map( (item, idx) => {
+                                return(
+                                    <fieldset 
+                                        className='mb-4'
+                                        key={ `item-${idx}` }
+                                    >
+                                        <label 
+                                            className='label'
+                                            htmlFor={ `item-${idx}` }
+                                        >
+                                            { item.label }
+                                        </label>
+
+                                        <input 
+                                            className='input'
+                                            type={ item.type }
+                                            id={ `item-${idx}` }
+                                            name={ `item-${idx}` }
+                                            required={ item.required }
+                                            min={ item.min }
+                                        />
+                                    </fieldset>
+                                )
+                            })
+                        }
+
+                        <BaseCallToAction 
+                            item={ this.state.cmpButton }
+                        />
                     </form>
                 )
             }
@@ -47,3 +95,41 @@
 */
     export default BaseFrom;
 //
+
+/* 
+<!-- Bind 'submit' event to emit 'onSubmit' event -->
+  <form action="*" class="base-form-component">
+    <h2 class="title is-size-4">{{cmpFormvalue.title}}</h2>
+
+    <!-- Display DOM loop: v-for -->
+    <fieldset 
+      class="mb-4"
+      v-for="(item, idx) in cmpFormvalue.fieldsets" 
+      :key="`item-${idx}`"
+    >
+      <label 
+        class="label"
+        :for="`item-${idx}`" 
+        v-text="item.label"
+      />
+
+      <input 
+        class="input"
+        :type="item.type" 
+        :id="`item-${idx}`" 
+        :name="`item-${idx}`"
+        :required="item.required"
+        :min="item.min"
+      >
+    </fieldset>
+
+    <BaseCallToAction 
+      :item="{
+        type: `submit`,
+        content: cmpFormvalue.submit,
+        isfull: true,
+        isprimary: true,
+      }"
+    />
+  </form>
+*/

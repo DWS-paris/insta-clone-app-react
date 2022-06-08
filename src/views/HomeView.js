@@ -7,6 +7,7 @@
 
     // Import chaild components
     import BaseFrom from '../components/base/BaseFrom';
+    import BaseCallToAction from '../components/base/BaseCallToAction';
 //
 
 /* 
@@ -21,25 +22,140 @@
             constructor(props){
                 // Use super() to inject properties from extend class
                 super(props);
+                
+                /* 
+                    [STATE] Component
+                    Define compoenent property value
+                */
+                    // Bind property value from parent component
+                    this.cmpLoginButton = {
+                        type: 'button',
+                        content: `Don't have an account? Create one now.`,
+                        isfull: false,
+                        isprimary: false,
+                        action: 'register'
+                    }
+
+                    this.cmpRegisterButton = {
+                        type: 'button',
+                        content: `Got an account? Go to login.`,
+                        isfull: false,
+                        isprimary: false,
+                        action: 'login'
+                    }
+
+                    this.state = {
+                        cmpStep: 'login',
+
+                        // Form values
+                        cmpLoginForm: {
+                            title: `Connect to your account`,
+                            submit: `Login`,
+                            fieldsets: [
+                              {
+                                label: `Email`,
+                                type: `email`,
+                                required: true,
+                                min: 5,
+                              },
+                              {
+                                label: `Password`,
+                                type: `password`,
+                                required: true,
+                                min: 5,
+                              }
+                            ]
+                        },
+
+                        cmpRegisterForm: {
+                        title: `Create your account`,
+                        submit: `Register`,
+                        fieldsets: [
+                            {
+                            label: `Name`,
+                            type: `text`,
+                            required: true,
+                            min: 2,
+                            },
+                            {
+                            label: `Email`,
+                            type: `email`,
+                            required: true,
+                            min: 5,
+                            },
+                            {
+                            label: `Password`,
+                            type: `password`,
+                            required: true,
+                            min: 5,
+                            },
+                            {
+                            label: `Repeate password`,
+                            type: `password`,
+                            required: true,
+                            min: 5,
+                            }
+                        ]
+                        },
+                    }
+                //
+
+                // Bind 'this' whitin class methods
+                this.defineStep = this.defineStep.bind(this)
             }
         //
+
+        /* 
+            [CMP] Methods
+            Define compoenent finctionalities
+        */
+            // Bind 'click' event on button
+            defineStep(event){
+                this.setState({ cmpStep: event })
+                console.log('defineStep', event, this.state.cmpStep)
+            }
+        //
+
 
         /* 
             [CMP] Render
             Display component DOM
         */
             render(){
-                return(
-                    <section className='home-view-component'>
-                        <p>home-view-component</p>
+                if( this.state.cmpStep === 'login' ){
+                    return(
+                        <section className='home-view-component section'>
+                            <article className="box">
+                                {/* Define login form */}
+                                <BaseFrom 
+                                    formvalue={ this.state.cmpLoginForm }
+                                />
+                            </article>
 
-                        {/* Define login form */}
-                        <BaseFrom />
+                            <BaseCallToAction 
+                                item={ this.cmpLoginButton }
+                                handleClick={ this.defineStep }
+                            />
+                        </section>
+                    )
+                }
+                else{
+                    return(
+                        <section className='home-view-component section'>
+                            <article className="box">
+                                {/* Define login form */}
+                                <BaseFrom 
+                                    formvalue={ this.state.cmpRegisterForm }
+                                />
+                            </article>
 
-                        {/* Define register form */}
-                        <BaseFrom />
-                    </section>
-                )
+                            <BaseCallToAction 
+                                item={ this.cmpRegisterButton }
+                                handleClick={ this.defineStep }
+                            />
+                        </section>
+                    )
+                }
             }
         //
     }

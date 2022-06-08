@@ -17,6 +17,27 @@ import React, { Component } from 'react';
             constructor(props){
                 // Use super() to inject properties from extend class
                 super(props);
+
+                /* 
+                    [STATE] Component
+                    Define compoenent property value
+                */
+                    // Bind property value from parent component
+                    this.cmpItem = this.props.item;
+                //
+
+                // Bind 'this' whitin class methods
+                this.onClick = this.onClick.bind(this)
+            }
+        //
+
+        /* 
+            [CMP] Methods
+            Define compoenent finctionalities
+        */
+            // Bind 'click' event on button
+            onClick(){
+                this.props.handleClick( this.cmpItem.action )
             }
         //
 
@@ -26,8 +47,12 @@ import React, { Component } from 'react';
         */
             render(){
                 return(
-                    <button className='base-call-to-action-component'>
-                        <p>base-call-to-action-component</p>
+                    <button 
+                        className='base-call-to-action-component button'
+                        type={ this.cmpItem.type }
+                        onClick={ this.onClick }
+                    >
+                        { this.cmpItem.content }
                     </button>
                 )
             }
